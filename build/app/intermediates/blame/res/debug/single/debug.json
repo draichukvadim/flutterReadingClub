@@ -8,8 +8,16 @@
         "source": "C:\\Users\\User\\Documents\\Work\\Flutter\\homework\\android\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher.png"
     },
     {
+        "merged": "C:\\Users\\User\\Documents\\Work\\Flutter\\homework\\build\\app\\intermediates\\res\\merged\\debug\\drawable_toast_bg.xml.flat",
+        "source": "C:\\Users\\User\\Documents\\Work\\Flutter\\homework\\build\\fluttertoast\\intermediates\\packaged_res\\debug\\drawable\\toast_bg.xml"
+    },
+    {
         "merged": "C:\\Users\\User\\Documents\\Work\\Flutter\\homework\\build\\app\\intermediates\\res\\merged\\debug\\mipmap-hdpi_ic_launcher.png.flat",
         "source": "C:\\Users\\User\\Documents\\Work\\Flutter\\homework\\android\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "C:\\Users\\User\\Documents\\Work\\Flutter\\homework\\build\\app\\intermediates\\res\\merged\\debug\\layout_toast_custom.xml.flat",
+        "source": "C:\\Users\\User\\Documents\\Work\\Flutter\\homework\\build\\fluttertoast\\intermediates\\packaged_res\\debug\\layout\\toast_custom.xml"
     },
     {
         "merged": "C:\\Users\\User\\Documents\\Work\\Flutter\\homework\\build\\app\\intermediates\\res\\merged\\debug\\mipmap-xxxhdpi_ic_launcher.png.flat",
