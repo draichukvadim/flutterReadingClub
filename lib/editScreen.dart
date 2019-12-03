@@ -2,27 +2,22 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:homework/profile.dart';
+import 'package:homework/profileRepository.dart';
 
 import 'genderList.dart';
 
 class EditScreen extends StatelessWidget {
-  Profile _profile;
-
-  EditScreen(this._profile);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Edit Screen")),
-      body: new ProfileForm(_profile),
+      body: new ProfileForm(),
     );
   }
 }
 
 class ProfileForm extends StatefulWidget {
-  Profile _profile;
-
-  ProfileForm(this._profile);
+  Profile _profile = ProfileRepository().profile;
 
   @override
   State<StatefulWidget> createState() => ProfileFormState(_profile);
@@ -140,7 +135,8 @@ class ProfileFormState extends State<ProfileForm> {
                           else {
                             text = 'Well done!';
                             color = Colors.green;
-                            Navigator.pop(context, _profile);
+                            ProfileRepository().profile = _profile;
+                            Navigator.pop(context);
                           }
 
                           Fluttertoast.showToast(

@@ -1,79 +1,110 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:homework/editScreen.dart';
-import 'package:homework/genderList.dart';
-import 'package:homework/profile.dart';
-import 'package:homework/skillsList.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:homework/profileScreen.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        title: 'Flutter Demo',
-        home: Scaffold(
-            appBar: AppBar(title: Text("Profile")), body: ProfileWidget()));
+    return MaterialApp(title: 'Flutter Demo', home: HomePage());
   }
 }
 
-class ProfileWidget extends StatefulWidget {
+class HomePage extends StatefulWidget {
   @override
-  State createState() => ProfileState(Profile(
-      "Vadim",
-      "Vadimdraichuk@gmail.com",
-      "Tamriel",
-      "https://avatars2.githubusercontent.com/u/33314734?s=460&v=4",
-      GenderList.male,
-      "https://github.com/draichukvadim",
-      true));
+  State<StatefulWidget> createState() => HomeState();
 }
 
-class ProfileState extends State<ProfileWidget> {
-  Profile _profile;
+class HomeState extends State<HomePage> {
+  int _selectedDrawerIndex = 0;
 
-  ProfileState(this._profile);
+  _getDrawerItemWidget(int pos) {
+    switch (pos) {
+      case 0:
+        return new ProfileScreen();
+      case 1:
+        return new EditScreen();
+      default:
+        return _showLogoutDialog();
+    }
+  }
 
-  @override
-  Widget build(BuildContext context) {
-    return new Center(
-      child: new Column(
-        children: <Widget>[
-          RaisedButton(
-            child: Text("Edit"),
-            onPressed: () async {
-              Profile push = await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => EditScreen(_profile)));
-              setState(() {
-                _profile = push;
-              });
-            },
-          ),
-          Text("Name: " + _profile.name),
-          Text("Email: " + _profile.email),
-          Text("Address: " + _profile.address),
-          Text("Gender: " + getGender(_profile.genderList)),
-          FlatButton(
-              onPressed: () async {
-                if (await canLaunch(_profile.github)) {
-                  await launch(_profile.github);
-                } else {
-                  throw 'Could not launch ' + _profile.github;
-                }
-              },
-              child: new Text("Link to Github: " + _profile.github)),
-          Image.network(this._profile.avatarUrl),
-          Text("Skills:"),
-          Divider(),
-          SkillsList(["Вышиваю", "Бухаю", "Танцую", "Пеку блинцы", "Сплю"])
-        ],
-      ),
+  _showLogoutDialog() {
+    return new AlertDialog(
+      title: Text('Leaving?'),
+      actions: [
+        FlatButton(
+          onPressed: () {
+            exit(0);
+          },
+          child: Text('Yes'),
+        ),
+        FlatButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: Text('No'),
+        ),
+      ],
     );
   }
 
-  String getGender(GenderList gender) {
-    return gender == GenderList.male ? "Male" : "Female";
+  _onSelectItem(int index) {
+    setState(() => _selectedDrawerIndex = index);
+    Navigator.of(context).pop(); // close the drawer
   }
+
+  @override
+  Widget build(BuildContext context) {
+    final drawerItems = [
+      new DrawerItem("Profile Fragment", Icons.account_circle),
+      new DrawerItem("Edit Fragment", Icons.edit),
+      new DrawerItem("Logout", Icons.exit_to_app),
+    ];
+
+    var drawerOptions = <Widget>[];
+    for (var i = 0; i < drawerItems.length; i++) {
+      var d = drawerItems[i];
+      drawerOptions.add(new ListTile(
+        leading: new Icon(d.icon),
+        title: new Text(d.title),
+        selected: i == _selectedDrawerIndex,
+        onTap: () => _onSelectItem(i),
+      ));
+    }
+
+    return Scaffold(
+        appBar: AppBar(title: Text("Luntik!")),
+        body: _getDrawerItemWidget(_selectedDrawerIndex),
+        drawer: Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: <Widget>[
+              DrawerHeader(
+                child: Column(
+                  children: <Widget>[
+                    Text('Тут может быть ваша реклама'),
+                    Image.network(
+                        "https://in-scale.ru/wp-content/uploads/2018/02/ploxaya-reklama-primer-8.jpg")
+                  ],
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                ),
+              ),
+              new Column(children: drawerOptions),
+            ],
+          ),
+        ));
+  }
+}
+
+class DrawerItem {
+  String title;
+  IconData icon;
+
+  DrawerItem(this.title, this.icon);
 }
