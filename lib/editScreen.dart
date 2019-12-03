@@ -3,31 +3,38 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:homework/profile.dart';
 import 'package:homework/profileRepository.dart';
+import 'package:homework/screenId.dart';
 
 import 'genderList.dart';
 
 class EditScreen extends StatelessWidget {
+  Function(int) onChanged;
+
+  EditScreen(this.onChanged);
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text("Edit Screen")),
-      body: new ProfileForm(),
-    );
+    return ProfileForm(onChanged);
   }
 }
 
 class ProfileForm extends StatefulWidget {
   Profile _profile = ProfileRepository().profile;
+  Function(int) onChanged;
+
+  ProfileForm(this.onChanged);
 
   @override
-  State<StatefulWidget> createState() => ProfileFormState(_profile);
+  State<StatefulWidget> createState() => ProfileFormState(_profile, onChanged);
 }
 
 class ProfileFormState extends State<ProfileForm> {
   final _formKey = GlobalKey<FormState>();
+  Function(int) onChanged;
+
   Profile _profile;
 
-  ProfileFormState(this._profile);
+  ProfileFormState(this._profile, this.onChanged);
 
   Widget build(BuildContext context) {
     return Container(
@@ -136,7 +143,7 @@ class ProfileFormState extends State<ProfileForm> {
                             text = 'Well done!';
                             color = Colors.green;
                             ProfileRepository().profile = _profile;
-                            Navigator.pop(context);
+                            onChanged(ScreenId.PROFILE);
                           }
 
                           Fluttertoast.showToast(
@@ -158,7 +165,7 @@ class ProfileFormState extends State<ProfileForm> {
                             msg: "Трусик!",
                             textColor: Colors.white,
                             backgroundColor: Colors.red);
-                        Navigator.pop(context, _profile);
+                        onChanged(ScreenId.PROFILE);
                       },
                       child: Text('Cancel'),
                       color: Colors.red,

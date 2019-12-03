@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:homework/editScreen.dart';
 import 'package:homework/profileScreen.dart';
+import 'package:homework/screenId.dart';
 
 void main() => runApp(MyApp());
 
@@ -23,10 +24,11 @@ class HomeState extends State<HomePage> {
 
   _getDrawerItemWidget(int pos) {
     switch (pos) {
-      case 0:
+      case ScreenId.PROFILE:
         return new ProfileScreen();
-      case 1:
-        return new EditScreen();
+      case ScreenId.EDIT:
+        return new EditScreen(
+            (pos) => setState(() => _selectedDrawerIndex = pos));
       default:
         return _showLogoutDialog();
     }
